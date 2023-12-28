@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search and Sortable Table</title>
+  <link rel="stylesheet" href="css/all.css">
+  <link rel="stylesheet" href="css/search_style.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $("#searchButton").click(function(){
+        var query = $("#searchInput").val();
+        $.ajax({
+          url: "search.php",
+          method: "POST",
+          data: {query: query},
+          success: function(data){
+            $("#tableBody").html(data);
+          }
+        });
+      });
+      
+      $("#searchInput").on("input", function(){
+        // This automatically updates the table as the user types
+        var query = $(this).val();
+        $.ajax({
+          url: "search.php",
+          method: "POST",
+          data: {query: query},
+          success: function(data){
+            $("#tableBody").html(data);
+          }
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search for data...">
+    <button id="searchButton">Search</button>
+  </div>
+
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>Drive Name</th>
+        <th>Location</th>
+        <th>Contact</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Content will be dynamically loaded here -->
+    </tbody>
+  </table>
+
+</body>
+</html>
